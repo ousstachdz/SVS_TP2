@@ -1,0 +1,90 @@
+*** This is NuSMV 2.6.0 (compiled on Wed Oct 14 15:36:56 2015)
+*** Enabled addons are: compass
+*** For more information on NuSMV see <http://nusmv.fbk.eu>
+*** or email to <nusmv-users@list.fbk.eu>.
+*** Please report bugs to <Please report bugs to <nusmv-users@fbk.eu>>
+
+*** Copyright (c) 2010-2014, Fondazione Bruno Kessler
+
+*** This version of NuSMV is linked to the CUDD library version 2.4.1
+*** Copyright (c) 1995-2004, Regents of the University of Colorado
+
+*** This version of NuSMV is linked to the MiniSat SAT solver. 
+*** See http://minisat.se/MiniSat.html
+*** Copyright (c) 2003-2006, Niklas Een, Niklas Sorensson
+*** Copyright (c) 2007-2010, Niklas Sorensson
+
+WARNING *** The model contains PROCESSes or ISAs. ***
+WARNING *** The HRC hierarchy will not be usable. ***
+-- specification AG (phil0.state = thinking -> AF phil0.state = eating)  is false
+-- as demonstrated by the following execution sequence
+Trace Description: CTL Counterexample 
+Trace Type: Counterexample 
+  -- Loop starts here
+  -> State: 1.1 <-
+    fork0 = ready
+    fork1 = ready
+    fork2 = ready
+    fork3 = ready
+    fork4 = ready
+    phil0.state = thinking
+    phil1.state = thinking
+    phil2.state = thinking
+    phil3.state = thinking
+    phil4.state = thinking
+    starvation = TRUE
+  -> Input: 1.2 <-
+    _process_selector_ = main
+    running = TRUE
+    phil4.running = FALSE
+    phil3.running = FALSE
+    phil2.running = FALSE
+    phil1.running = FALSE
+    phil0.running = FALSE
+  -> State: 1.2 <-
+-- specification EG (phil0.state = thinking -> AF phil0.state = eating)  is false
+-- as demonstrated by the following execution sequence
+Trace Description: CTL Counterexample 
+Trace Type: Counterexample 
+  -> State: 2.1 <-
+    fork0 = ready
+    fork1 = ready
+    fork2 = ready
+    fork3 = ready
+    fork4 = ready
+    phil0.state = thinking
+    phil1.state = thinking
+    phil2.state = thinking
+    phil3.state = thinking
+    phil4.state = thinking
+    starvation = TRUE
+-- specification EX (phil0.state = thinking -> AF phil0.state = eating)  is true
+-- specification AG starvation  is false
+-- as demonstrated by the following execution sequence
+Trace Description: CTL Counterexample 
+Trace Type: Counterexample 
+  -> State: 3.1 <-
+    fork0 = ready
+    fork1 = ready
+    fork2 = ready
+    fork3 = ready
+    fork4 = ready
+    phil0.state = thinking
+    phil1.state = thinking
+    phil2.state = thinking
+    phil3.state = thinking
+    phil4.state = thinking
+    starvation = TRUE
+  -> Input: 3.2 <-
+    _process_selector_ = phil0
+    running = FALSE
+    phil4.running = FALSE
+    phil3.running = FALSE
+    phil2.running = FALSE
+    phil1.running = FALSE
+    phil0.running = TRUE
+  -> State: 3.2 <-
+    fork0 = busy
+    fork1 = busy
+    phil0.state = eating
+    starvation = FALSE

@@ -1,0 +1,55 @@
+MODULE philosophe(gfourchette, dfourchette)
+/-- le philosophe etat soit etre penser ou manger --/
+VAR
+	etat: {penser, manger};
+ASSIGN
+/-- l'etat initial penser --/
+	init(etat) := penser;
+/--quand le philosophe prend une fourchette ça devient occupé --/
+	next(gfourchette) :=
+		case
+			(gfourchette = pret): occupe;
+			(gfourchette = occupe): pret;
+			TRUE: gfourchette;
+		esac;
+	next(dfourchette) :=
+		case
+			(dfourchette = pret): occupe;
+			(dfourchette = occupe): pret;
+			TRUE: dfourchette;
+		esac;
+/--ce n'est que lorsque le philosophe prend deux fourchettes qu'il commence à manger--/
+	next(etat):=
+		case
+			(etat = penser & gfourchette = pret & dfourchette = pret): manger;
+			(etat = manger): penser;
+			TRUE: etat;
+		esac;
+
+
+MODULE main
+VAR
+	fourchette0 : {pret, occupe};
+	fourchette1 : {pret, occupe};
+	fourchette2 : {pret, occupe};
+	fourchette3 : {pret, occupe};
+	fourchette4 : {pret, occupe};
+	philosophe0 : process philosophe (fourchette0, fourchette1);
+	philosophe1 : process philosophe (fourchette1, fourchette2);
+	philosophe2 : process philosophe (fourchette2, fourchette3);
+	philosophe3 : process philosophe (fourchette3, fourchette4);
+	philosophe4 : process philosophe (fourchette4, fourchette0);
+ASSIGN
+	init (fourchette0) := pret;
+	init (fourchette1) := pret;
+	init (fourchette2) := pret;
+	init (fourchette3) := pret;
+	init (fourchette4) := pret;
+
+DEFINE
+	starvation := philosophe0.etat = penser; 
+	
+SPEC AG (philosophe0.etat = penser -> AF (philosophe0.etat = manger));
+SPEC EG (philosophe0.etat = penser -> AF (philosophe0.etat = manger));
+SPEC EX (philosophe0.etat = penser -> AF (philosophe0.etat = manger));
+SPEC AG (starvation)

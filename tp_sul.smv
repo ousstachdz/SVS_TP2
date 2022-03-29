@@ -1,0 +1,85 @@
+MODULE main 
+VAR 
+    f1 : {lib, prg, prd};
+    f2 : {lib, prg, prd};
+    f3 : {lib, prg, prd};
+    f4 : {lib, prg, prd};
+    f5 : {lib, prg, prd};
+    
+    ph1 : process philosophe(f1,f2);
+    ph1 : process philosophe(f2,f3);
+    ph1 : process philosophe(f3,f4);
+    ph1 : process philosophe(f4,f5);
+    ph1 : process philosophe(f5,f1);
+
+ASSIGN 
+    init(f1) := lib;
+    init(f2) := lib;
+    init(f3) := lib;
+    init(f4) := lib;
+    init(f5) := lib;
+
+MODULE philosophe(fg, fd)
+VAR 
+    etat {manger, penser, faim}
+ASSIGN
+
+    init (etat):= penser;
+        next (etat):= 
+        case
+            (etat= penser): {faim, manger } ;
+            (fg = prd) & (fd = prg) & (etat = faim) : manger ;
+            (etat = manger): penser;
+            TRUE: etat ;
+        esac;
+
+        next(fg) :=
+        case
+            (etat = faim) &( fg = lib) & (fd = lib) : prd;
+            (etat = penser) & (fg = prd) : lib;
+            TRUE:fg;
+        esac;
+
+        next(fd) :=
+        case
+            (etat = faim) &( fd = lib) & (fg = lib) : prg;
+            (etat = penser) & (fd = prg) : lib;
+            TRUE:fd;
+        esac;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        -- next(fg) :=
+        -- case
+            -- (fg = lib): prg;
+            -- (fg = prg): lib;
+            -- (fg = lib): prd;
+            -- (fg = prd): lib;
+            -- TRUE:fg;
+        -- esac;
+-- 
+        -- next(fd) :=
+        -- case
+            -- (fd = lib): prd;
+            -- (fd = prd): lib;
+            -- (fd = lib): prg;
+            -- (fd = prg): lib;
+            -- TRUE:fd;
+        -- esac;
+
